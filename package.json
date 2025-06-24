@@ -1,0 +1,48 @@
+{
+  "name": "plune.app-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch application/http/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@casl/ability": "^6.7.3",
+    "@fastify/cors": "^11.0.1",
+    "@fastify/rate-limit": "^10.3.0",
+    "@fastify/swagger": "^9.5.1",
+    "@fastify/swagger-ui": "^5.2.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/papaparse": "^5.3.16",
+    "bcryptjs": "^3.0.2",
+    "casl": "^0.2.0",
+    "csv-parser": "^3.2.0",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "fastify": "^5.3.3",
+    "fastify-cron": "^1.4.0",
+    "fastify-plugin": "^5.0.1",
+    "fastify-type-provider-zod": "^4.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.16.0",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
+    "papaparse": "^5.5.3",
+    "tsx": "^4.19.4",
+    "winston": "^3.11.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
