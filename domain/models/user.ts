@@ -3,10 +3,10 @@ import { model, Schema } from "mongoose";
 
 export class User implements IUser {
   avatar?: string | undefined;
-  email: string;
-  name: string;
-  password?: string | undefined;
-  organizationsRoles: OrganizationRole[];
+  email!: string;
+  name!: string;
+  password!: string;
+  organizationsRoles!: OrganizationRole[];
   currentSelectedOrganization? : OrganizationRole;
 }
 

@@ -7,10 +7,10 @@ import fastifyCors from "@fastify/cors";
 import { ForbiddenError } from "@casl/ability";
 import rateLimit from "@fastify/rate-limit";
 import { Logger } from "../../domain/config/logger";
-import { Router } from "../router/index.routes";
 import { AppError } from "../../infra/utils/AppError";
 import { connectDatabase } from "../../infra/database/connection";
 import { userPlugin } from "./plugin/user-plugin";
+import { Router } from "../router/index-routes";
 
 const port = process.env["PORT"] || 3000;
 
@@ -69,7 +69,6 @@ app.setErrorHandler((error, request, reply) => {
     return reply.status(403).send({
       statusCode: 403,
       message: error.message,
-      cause: error.cause,
       validation: error.validation
     });
   }
@@ -79,7 +78,6 @@ app.setErrorHandler((error, request, reply) => {
     return reply.status(400).send({
       statusCode: 400,
       message: error.message,
-      cause: error.cause,
       validation: error.validation
     });
   }

@@ -1,6 +1,5 @@
-export enum OrganizationRole {
+import { OrganizationRole } from "./user";
 
-}
 export interface AppTokenPayload {
   sub : number;
   iat : number;

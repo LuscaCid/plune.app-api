@@ -4,8 +4,9 @@ export type Roles = 'Admin' | 'Editor' | 'Approver' | 'Viewer';
 export interface User extends Document {
   name : string;
   email : string;
-  password? : string;
+  password : string;
   organizationsRoles : OrganizationRole[];
+  lastAccess?: Date;
   avatar? : string;
 }
 
