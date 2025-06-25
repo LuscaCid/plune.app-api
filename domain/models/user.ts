@@ -26,7 +26,7 @@ export const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   name: { type: String, required: true },
   password: { type: String, required: true },
-  organizationsRoles: organizationRoleSchema
+  organizationsRoles: [organizationRoleSchema]
 })
 
 export const userModel = model<IUser>('user', userSchema, "user");  
