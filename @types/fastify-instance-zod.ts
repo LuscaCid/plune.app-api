@@ -2,6 +2,7 @@ import { FastifyBaseLogger, FastifyInstance, RawReplyDefaultExpression, RawReque
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { AppTokenPayload } from "./request";
 import { UserService } from "@/domain/services/user-service";
+import { OrganizationService } from "@/domain/services/organization-service";
 
 export interface FastifyInstanceZod extends FastifyInstance<
   RawServerDefault,
@@ -16,5 +17,6 @@ declare module 'fastify' {
   }
   interface FastifyInstance {
     userService : UserService
+    organizationService : OrganizationService
   }
 }
