@@ -13,7 +13,7 @@ export interface FastifyInstanceZod extends FastifyInstance<
 > { }
 declare module 'fastify' {
   export interface FastifyRequest {
-    user?: AppTokenPayload
+    tokenPayload?: AppTokenPayload
   }
   interface FastifyInstance {
     userService : UserService

@@ -1,10 +1,7 @@
-import { OrganizationRole } from "./user";
+import { OrganizationRole, User } from "./user";
 
 export interface AppTokenPayload {
-  sub : number;
   iat : number;
   exp : number;
-  name : string;
-  id : string;
-  organizationRoles : OrganizationRole[];
+  user : User
 }

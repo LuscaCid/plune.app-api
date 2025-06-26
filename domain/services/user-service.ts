@@ -7,10 +7,9 @@ import { AppError } from "@/infra/utils/AppError";
 import { compare, hash } from "bcryptjs";
 export class UserService {
   static INVALID_CREDENTIALS = "Invalid credentials"
-  constructor(private readonly userRepository : UserRepository) 
-  {}
+  constructor(private readonly userRepository: UserRepository) { }
 
-  signIn = async (payload : SignInDto) => {
+  signIn = async (payload: SignInDto) => {
     const user = await this.userRepository.findByEmail(payload.email);
     if (!user) {
       throw new AppError(UserService.INVALID_CREDENTIALS, 401);
@@ -22,12 +21,19 @@ export class UserService {
 
     await this.userRepository.updateLastAccess(user.id);
     return {
-      token : JwtSecurityService.signInToken({ id : user.id, organizationRoles : user.organizationsRoles } as AppTokenPayload),
-      userCommonData : { name : user.name, email : user.email }
+      token: JwtSecurityService.signInToken({
+        user: {
+          email: user.email,
+          name: user.name,
+          organizationsRoles: user.organizationsRoles,
+          avatar: user.avatar
+        }
+      } as AppTokenPayload),
+      userCommonData: { name: user.name, email: user.email }
     }
   }
-  
-  signUp = async (newUser : SignUpDto) => {
+
+  signUp = async (newUser: SignUpDto) => {
     const userAlreadyExists = await this.userRepository.findByEmail(newUser.email);
     if (userAlreadyExists) {
       throw new AppError("User with this e-mail already exists", 401);

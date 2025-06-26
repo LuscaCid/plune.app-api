@@ -1,5 +1,6 @@
 import { AbilityBuilder, createMongoAbility, ExtractSubjectType, InferSubjects, MongoAbility } from "@casl/ability";
 import { User } from "../../../domain/models/user";
+import { Organization } from "@/domain/models/oraganization";
 
 export enum Actions {
   Manage = "manage",
@@ -10,7 +11,8 @@ export enum Actions {
 }
 
 export type Subjects = InferSubjects<
-  typeof User
+  typeof User | 
+  typeof Organization
 > |
   "all";
 
