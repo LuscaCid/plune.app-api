@@ -12,6 +12,7 @@ import { connectDatabase } from "../../infra/database/connection";
 import { userPlugin } from "./plugin/user-plugin";
 import { Router } from "../router/index-routes";
 import { organizationPlugin } from "./plugin/organization-plugin";
+import { flowPlugin } from "./plugin/flow-plugin";
 
 const port = process.env["PORT"] || 3000;
 
@@ -25,8 +26,11 @@ app.register(rateLimit, {
 });
 
 app.register(fastifyCors, { origin: "*" });
+
 app.register(userPlugin);
 app.register(organizationPlugin);
+app.register(flowPlugin);
+
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 app.register(fastifySwagger, {

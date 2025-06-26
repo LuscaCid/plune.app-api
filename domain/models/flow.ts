@@ -43,7 +43,6 @@ const formSchema = new Schema({
 const nodeDataSchema = new Schema({
   label: { type: String },
   description: { type: String },
-  organizationId: { type: String },
   rules: { type: [conditionRuleSchema], default: undefined },
   status: {
     type: String,
@@ -82,6 +81,7 @@ const flowSchema = new Schema<IFlow>({
   createdBy: { type: String, required: true },
   currentStage: { type: String, required: true },
   description: { type: String },
+  organizationId: { type: String },
   id: { type: String, required: true },
   isPublished: { type: Boolean, required: true },
   name: { type: String, required: true },
@@ -90,4 +90,5 @@ const flowSchema = new Schema<IFlow>({
   edges: { type: [edgeSchema], required: true },
 });
 
-export const flowModel = model<IFlow>('Flow', flowSchema, 'flows');
+export const flowInstanceModel = model<IFlow>('flow_instance', flowSchema, 'flow_instance');
+export const flowTemplateModel = model<IFlow>('flow_template', flowSchema, 'flow_template');

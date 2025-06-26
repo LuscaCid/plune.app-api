@@ -16,7 +16,6 @@ interface ConditionRule {
 export interface FlowNodeData {
   label: string;
   description?: string;
-  organizationId: string
   rules?: ConditionRule[];// se type === 'condition'
   status: FlowNodeStatus;
   createdBy: string
@@ -44,6 +43,7 @@ export interface FlowEdge {
 export interface Flow {
   id: string;
   name: string;
+  organizationId: string
   description?: string;
   currentStage: string;
   nodes: FlowNode[];
