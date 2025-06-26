@@ -3,7 +3,8 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { OrganizationDto } from "../http/dto/organization-dto";
 import { ForbiddenError } from "@casl/ability";
-import { CaslFactory } from "../http/security/casl-factory";
+import { Actions, CaslFactory } from "../http/security/casl-factory";
+import { Organization } from "@/domain/models/oraganization";
 
 export function organizationRouter(app: FastifyInstanceZod) {
   const orgTags = ["Organization"];
@@ -19,7 +20,7 @@ export function organizationRouter(app: FastifyInstanceZod) {
         }
       },
       async (req, reply) => {
-        return await instance.organizationService.getUserOrganizations(req.user!.id);
+        return await instance.organizationService.getUserOrganizations(req.tokenPayload?.user!.id);
       }
     )
     instance.withTypeProvider<ZodTypeProvider>().post(
@@ -39,8 +40,8 @@ export function organizationRouter(app: FastifyInstanceZod) {
       "/",
       {
         preHandler : (req, reply, done) => {
-          const ability = CaslFactory.defineAbilityForUser(req.user);
-          ForbiddenError.from
+          const ability = CaslFactory.defineAbilityForUser(req.tokenPayload?.user);
+          ForbiddenError.from(ability).throwUnlessCan(Actions.Update, Organization)
 
           done();
         },

@@ -6,6 +6,7 @@ import { userRouter } from "./user-routes";
 
 export function Router (app : FastifyInstanceZod) {
   app.register((instance, options, done) => {
+    //protected routes by auth_guard
     instance.register((subInstance, opts, next) => {
       subInstance.addHook("preHandler", authGuard);
       subInstance.register(organizationRouter);
@@ -13,6 +14,7 @@ export function Router (app : FastifyInstanceZod) {
       next();
     }, { prefix : "private"});
   
+    //public routes
     instance.register(userRouter);
     done();
   }, { prefix: "api"});
