@@ -4,6 +4,7 @@ import { z } from "zod";
 import { DefaultSchema } from "../http/dto/routes-default";
 
 export function nodesRouter(app: FastifyInstanceZod) {
+  const tags = ['nodes']
   app.register((instance, options, done) => {
     instance.withTypeProvider<ZodTypeProvider>()
       .get(
@@ -13,6 +14,7 @@ export function nodesRouter(app: FastifyInstanceZod) {
             querystring: z.object({
 
             }),
+            tags: tags,
             response: {
               200: DefaultSchema.defaultReturn
             }
@@ -23,6 +25,6 @@ export function nodesRouter(app: FastifyInstanceZod) {
         }
       )
     done()
-  }, { prefix: 'nodes' })
+  }, { prefix: '/nodes' })
   return
 }

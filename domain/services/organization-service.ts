@@ -6,7 +6,8 @@ import { AppError } from "@/infra/utils/AppError";
 
 export class OrganizationService {
   constructor(
-    private readonly organizationRepository: OrganizationRepository
+    private readonly organizationRepository: OrganizationRepository,
+
   ) { }
 
   getUserOrganizations = async (userId: string) => {
@@ -27,23 +28,29 @@ export class OrganizationService {
     if (!payload.orgId) {
       throw new AppError("Organization id is necessary", 403)
     }
-    const newUsersInRequest = payload.users as User[];
+    const newUsersInRequest = payload.users;
 
     const organizationInDatabase = await this.organizationRepository.findById(payload.orgId);
     if (!organizationInDatabase) {
       throw new AppError("Organization for update not found", 404)
     }
-    const newUsersListed = newUsersInRequest.filter((newUser) => organizationInDatabase.users.find(actual => actual.id == newUser.id));
-
     const updatePayload = {
       createdBy: organizationInDatabase.createdBy,
       name: organizationInDatabase.name,
-      users: newUsersListed,
-
     } as Organization;
 
+    // const newUsersListed = newUsersInRequest ? newUsersInRequest.filter((newUser) => organizationInDatabase.users.find(actual => actual.id == newUser.id)) as User[] : [];
+
+    // if (newUsersListed) {
+    //   updatePayload.users = newUsersListed;
+    // }
     return await this.organizationRepository.update(updatePayload)
   }
+
+  saveUsersInOrganization = async (organizationId: string, usersIds: string[]) => {
+    return await this.organizationRepository.
+  }
+
   delete = async (id: string) => {
     return await this.organizationRepository.delete(id);
   }

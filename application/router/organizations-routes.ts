@@ -13,14 +13,12 @@ export function organizationRouter(app: FastifyInstanceZod) {
       "/",
       {
         schema: {
-          params: z.object({
-            userId: z.string().min(1, "Its necessary to pass user id to see his organizations")
-          }),
           tags: orgTags
         }
       },
       async (req, reply) => {
-        return await instance.organizationService.getUserOrganizations(req.tokenPayload?.user!.id);
+        const data = await instance.organizationService.getUserOrganizations(req.tokenPayload!.user.id!);
+        return reply.status(200).send({ data, statusCode: 200 })
       }
     )
     instance.withTypeProvider<ZodTypeProvider>().post(
@@ -33,15 +31,15 @@ export function organizationRouter(app: FastifyInstanceZod) {
       },
       async (req, reply) => {
         const orgSaved = await instance.organizationService.save(req.body);
-        return reply.status(201).send({ data : orgSaved, message : "Organization saved with success", statusCode: 200})
+        return reply.status(201).send({ data: orgSaved, message: "Organization saved with success", statusCode: 200 })
       }
     )
     instance.withTypeProvider<ZodTypeProvider>().put(
       "/",
       {
-        preHandler : (req, reply, done) => {
-          const ability = CaslFactory.defineAbilityForUser(req.tokenPayload?.user);
-          ForbiddenError.from(ability).throwUnlessCan(Actions.Update, Organization)
+        preHandler: (req, reply, done) => {
+          // const ability = CaslFactory.defineAbilityForUser(req.tokenPayload?.user);
+          // ForbiddenError.from(ability).throwUnlessCan(Actions.Update, Organization)
 
           done();
         },
@@ -52,9 +50,22 @@ export function organizationRouter(app: FastifyInstanceZod) {
       },
       async (req, reply) => {
         const orgSaved = await instance.organizationService.save(req.body);
-        return reply.status(201).send({ data : orgSaved, message : "Organization saved with success", statusCode: 200})
+        return reply.status(201).send({ data: orgSaved, message: "Organization saved with success", statusCode: 200 })
       }
     )
+    instance.withTypeProvider<ZodTypeProvider>()
+      .post(
+        "add-user-in-organization",
+        {
+          schema : {
+            body : OrganizationDto.SaveOrgDto
+          }
+        },
+        async (req, reply) => {
+          const data = await instance.organizationService.saveUsersInOrganization(req.body);
+          return reply.status(200).send({data, message: "Users updated.", statusCode : 200})
+        }
+      )
     done();
-  }, { prefix : "organizations"});
+  }, { prefix: "organizations" });
 }

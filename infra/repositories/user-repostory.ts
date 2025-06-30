@@ -1,22 +1,28 @@
 import { Model } from "mongoose";
 import { User } from "../../@types/user";
 import { SignUpDto } from "@/application/http/dto/user-dto";
+import { Repository } from "typeorm";
 
 export class UserRepository {
   constructor(
-    private readonly userModel: Model<User>
+    private readonly userModel: Repository<User>
   ) { }
 
   findByEmail = async (email: string) => {
-    return await this.userModel.findOne({ email });
+    return await this.userModel.findOneBy({ email });
   }
 
   create = async (user: SignUpDto) => {
-    return await this.userModel.create(user)
+    return await this.userModel.insert(user as User)
   }
 
-  updateLastAccess = async (_id: string) => {
-    return await this.userModel.findOneAndUpdate({ _id }, { $set: { lastAccess: new Date() } })
+  updateLastAccess = async (id: string) => {
+    return await this.userModel
+    .createQueryBuilder()
+    .update()
+    .set({ lastAccess : new Date() } as User)
+    .where("id = :id", { id })
+    .execute();
   }
-
+  
 }

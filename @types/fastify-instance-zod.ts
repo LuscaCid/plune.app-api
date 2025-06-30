@@ -4,6 +4,7 @@ import { AppTokenPayload } from "./request";
 import { UserService } from "@/domain/services/user-service";
 import { OrganizationService } from "@/domain/services/organization-service";
 import { FlowService } from "@/domain/services/flow-service";
+import { DataSource } from "typeorm";
 
 export interface FastifyInstanceZod extends FastifyInstance<
   RawServerDefault,
@@ -22,5 +23,6 @@ declare module 'fastify' {
     // different DI by flow
     flowInstanceService : FlowService;
     flowTemplateService : FlowService;
+    dataSource : DataSource;
   }
 }

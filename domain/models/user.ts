@@ -6,14 +6,12 @@ export class User implements IUser {
   email!: string;
   name!: string;
   password!: string;
-  organizationsRoles!: OrganizationRole[];
-  currentSelectedOrganization? : OrganizationRole;
+  id!: string;
+  lastAccess?: Date | undefined;
 }
 
 export const organizationRoleSchema = new Schema<OrganizationRole>({
   organizationId: { type: String, required: true },
-  organizationName: { type: String, required: true },
-  organizationLogo: { type: String, required: true },
   role: {
     type: String,
     enum: ['Admin', 'Editor', 'Approver', 'Viewer'],

@@ -6,6 +6,9 @@ export class FlowService {
     private readonly flowRepository: IFlowRepository
   ) { }
 
+  updateNodePosition = async () => {
+    
+  }
   update = async (flow: Flow) => {
     return await this.flowRepository.update(flow);
   }
