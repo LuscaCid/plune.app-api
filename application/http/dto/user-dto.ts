@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export class UserDto {
   static signUp = z.object({
+    email : z.string().email(),
     password : z.string().min(6),
     name : z.string().min(2).max(30),
-    email : z.string().email(),
     avatar : z.any().optional(),
   });
 

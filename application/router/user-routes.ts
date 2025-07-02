@@ -1,6 +1,7 @@
 import { FastifyInstanceZod } from "@/@types/fastify-instance-zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { UserDto } from "../http/dto/user-dto";
+import { User } from "@/domain/entities-pg/user.entity";
 
 export function userRouter(app: FastifyInstanceZod) {
   const userTags = ["Users"]
@@ -28,7 +29,7 @@ export function userRouter(app: FastifyInstanceZod) {
         }
       },
       async (req, reply) => {
-        const user = await instance.userService.signUp(req.body);
+        const user = await instance.userService.signUp(req.body) as unknown as User;
         return reply.status(201).send({
           data: { name: user.name, email: user.email, avatar: user.avatar },
           statusCode: 201,

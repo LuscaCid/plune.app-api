@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "emitDecoratorMetadata" : true,
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
     "target": "ES2020",
     "module": "CommonJS",
     "moduleResolution": "node",
@@ -10,9 +13,19 @@
     "resolveJsonModule": true,
     "baseUrl": ".", // base do projeto
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["infra", "domain", "application", "@types"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "infra",
+    "domain",
+    "application",
+    "@types"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

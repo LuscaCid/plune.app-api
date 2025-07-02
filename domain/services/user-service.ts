@@ -23,11 +23,11 @@ export class UserService {
     return {
       token: JwtSecurityService.signInToken({
         user: {
+          id: user.id,
           email: user.email,
           name: user.name,
-          organizationsRoles: user.organizationsRoles,
           avatar: user.avatar
-        }
+        } as User
       } as AppTokenPayload),
       userCommonData: { name: user.name, email: user.email }
     }

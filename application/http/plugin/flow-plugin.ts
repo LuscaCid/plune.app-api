@@ -1,19 +1,16 @@
 import { FastifyInstanceZod } from "@/@types/fastify-instance-zod";
-import { flowInstanceModel, flowTemplateModel } from "@/domain/models/flow";
+import { Flow } from "@/domain/entities-pg/flow.entity";
 import { FlowService } from "@/domain/services/flow-service";
-import { FlowInstanceRepository } from "@/infra/repositories/flow-instance-repository";
-import { FlowTemplateRepository } from "@/infra/repositories/flow-template-repository";
+import { FlowRepository } from "@/infra/repositories/flow-repository";
 import { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
 const registerFlow: FastifyPluginAsync = async (app: FastifyInstanceZod) => {
-  const flowInstanceRepository = new FlowInstanceRepository(flowInstanceModel);
-  const flowTemplateRepository = new FlowTemplateRepository(flowTemplateModel);
+  const flowRepo = app.dataSource.getRepository(Flow);
+  const flowRepository = new FlowRepository(flowRepo);
 
-  const flowInstanceService = new FlowService(flowInstanceRepository);
-  const flowTemplateService = new FlowService(flowTemplateRepository);
-  app.decorate("flowInstanceService", flowInstanceService);
-  app.decorate("flowTemplateService", flowTemplateService);
+  const flowService = new FlowService(flowRepository);
+  app.decorate("flowService", flowService);
 }
 
 export const flowPlugin = fp(registerFlow);
