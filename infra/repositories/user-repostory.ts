@@ -13,7 +13,7 @@ export class UserRepository {
   }
 
   create = async (user: SignUpDto) => {
-    return await this.userModel.insert(user as User)
+    return await this.userModel.save({...user, } as User) 
   }
 
   updateLastAccess = async (id: string) => {

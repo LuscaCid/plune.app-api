@@ -4,9 +4,9 @@ import { Flow } from "./flow.entity";
 
 export type OrganizationRoleType = "Admin" | "Editor" | "Approver" | "Viewer";
 
-@Entity({ name: "user", synchronize : true })
+@Entity({ name: "user", synchronize: true })
 export class User {
-  @PrimaryGeneratedColumn({ name : 'id' })
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: string;
 
   @Column({ name: "name", type: "text" })
@@ -21,10 +21,13 @@ export class User {
   @Column({ nullable: true, name: "avatar", type: "text" })
   avatar?: string;
 
+  @Column({ type: "date", default: new Date(), name: "lastAccess" })
+  lastAccess: Date;
+
   @ManyToMany(() => UserOrganizationRole, role => role.user)
-  organizationRoles: UserOrganizationRole[];
+  organizationRoles?: UserOrganizationRole[];
 
   // relationship for created flows by users
   @OneToMany(() => Flow, (flow) => flow.user)
-  flows : Flow[];
+  flows?: Flow[];
 }
