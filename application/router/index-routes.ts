@@ -1,5 +1,6 @@
 import { FastifyInstanceZod } from "../../@types/fastify-instance-zod";
 import { authGuard } from "../http/middleware/auth-guard";
+import { flowRouter } from "./flow-routes";
 import { nodesRouter } from "./nodes-routes";
 import { organizationRouter } from "./organizations-routes";
 import { userRouter } from "./user-routes";
@@ -11,6 +12,7 @@ export function Router (app : FastifyInstanceZod) {
       subInstance.addHook("preHandler", authGuard);
       subInstance.register(organizationRouter);
       subInstance.register(nodesRouter);
+      subInstance.register(flowRouter);
       next();
     }, { prefix : "private"});
   

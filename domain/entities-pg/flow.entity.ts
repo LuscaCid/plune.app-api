@@ -1,10 +1,12 @@
 import { FlowEdge, FlowNode } from "@/@types/Flow";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
+import { Organization } from "./organization.entity";
+import { FlowType } from "@/application/router/flow-routes";
 
 @Entity("flow")
 export class Flow {
-  @PrimaryGeneratedColumn({ name : 'id' })
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: string;
 
   @Column({ name: "name", type: "text" })
@@ -13,21 +15,15 @@ export class Flow {
   @Column({ nullable: true, name: "description", type: "text" })
   description?: string;
 
-  @Column({ name: "organizationId", type: "text" })
-  organizationId: string;
-
-  @Column({ name: "userId", type: "text" })
-  createdBy: string;
-
   @Column({ name: "currentStage", type: "text" })
   currentStage: string;
 
-  // @Column({ default: false, name : "isPublished" })
-  // isPublished: boolean;
+  @Column({ name: "isPublished", type: "boolean", default: false })
+  isPublished: boolean;
 
   @Column({
     type: "enum",
-    enum: ["template", "instance"],
+    enum: ["template", "instance"] satisfies FlowType[],
     default: "template",
     name: "type"
   })
@@ -46,5 +42,10 @@ export class Flow {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.flows)
-  user : User
+  @JoinColumn({ name: "createdBy" })
+  createdBy: User
+
+  @ManyToOne(() => Organization)
+  @JoinColumn({ name: "organizationId" })
+  organization: Organization;
 }

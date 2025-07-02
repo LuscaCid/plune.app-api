@@ -8,13 +8,10 @@ import { ForbiddenError } from "@casl/ability";
 import rateLimit from "@fastify/rate-limit";
 import { Logger } from "../../domain/config/logger";
 import { AppError } from "../../infra/utils/AppError";
-import { connectDatabase } from "../../infra/database/connection";
 import { userPlugin } from "./plugin/user-plugin";
 import { Router } from "../router/index-routes";
 import { organizationPlugin } from "./plugin/organization-plugin";
 import { flowPlugin } from "./plugin/flow-plugin";
-import { ServerConfig } from "@/domain/config/server-config";
-import { connect } from "@/infra/database/datasource";
 import { connectionPlugin } from "./plugin/connection-plugin";
 
 const port = process.env["PORT"] || 3000;
@@ -27,7 +24,6 @@ app.register(rateLimit, {
   max: 50,
   timeWindow: "4000"
 });
-
 app.register(fastifyCors, { origin: "*" });
 
 app.register(connectionPlugin);

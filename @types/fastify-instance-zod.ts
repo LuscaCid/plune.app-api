@@ -21,8 +21,7 @@ declare module 'fastify' {
     userService : UserService;
     organizationService : OrganizationService;
     // different DI by flow
-    flowInstanceService : FlowService;
-    flowTemplateService : FlowService;
+    flowService : FlowService;
     dataSource : DataSource;
   }
 }

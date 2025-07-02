@@ -1,23 +1,32 @@
-import { Flow } from "@/@types/Flow";
+import { AppError } from "@/infra/utils/AppError";
+import { Flow } from "../entities-pg/flow.entity";
 import { IFlowRepository } from "../interfaces/FlowRepository";
+import { FlowRepository } from "@/infra/repositories/flow-repository";
+import { FlowType } from "@/application/router/flow-routes";
+import { User } from "../entities-pg/user.entity";
+import { GetFlowDTO, SaveFlowDTO } from "@/application/http/dto/flow-dto";
 
 export class FlowService {
   constructor(
-    private readonly flowRepository: IFlowRepository
+    private readonly flowRepository: FlowRepository
   ) { }
-
   updateNodePosition = async () => {
-    
+
   }
-  update = async (flow: Flow) => {
-    return await this.flowRepository.update(flow);
+
+  update = async (flow: SaveFlowDTO, user: User) => {
+    if (!flow.id) throw new AppError("The id is necessary for update a flow")
+    return await this.flowRepository.save(flow, user);
   }
-  getOrganizationFlows = async (organizationId: string) => {
-    return await this.flowRepository.getOrganizationFlows(organizationId);
+
+  getOrganizationFlows = async (payload: GetFlowDTO, type: FlowType) => {
+    return await this.flowRepository.getOrganizationFlows(payload, type);
   }
-  create = async (flow: Flow) => {
-    return await this.flowRepository.create(flow);
+
+  save = async (flow: SaveFlowDTO, user: User) => {
+    return await this.flowRepository.save(flow, user);
   }
+
   delete = async (flowId: string) => {
     return await this.flowRepository.delete(flowId);
   }
