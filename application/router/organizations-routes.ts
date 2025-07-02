@@ -14,7 +14,8 @@ export function organizationRouter(app: FastifyInstanceZod) {
       {
         schema: {
           querystring: z.object({ orgId: z.string().min(1) }),
-          tags: orgTags
+          tags: orgTags,
+          summary :"Returns all users from a organization"
         }
       },
       async (req, reply) => {

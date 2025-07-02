@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
+import { Flow } from "./flow.entity";
 
 @Entity("organization")
 export class Organization {
@@ -16,4 +17,6 @@ export class Organization {
   @ManyToOne(() => User)
   createdBy: User;
 
+  @OneToMany(() => Flow, (flow) => flow.organization)
+  flows: Flow[]
 }
