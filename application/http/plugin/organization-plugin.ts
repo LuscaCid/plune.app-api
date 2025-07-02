@@ -12,7 +12,7 @@ function registerOrganization(app: FastifyInstanceZod) {
   //DI
   const organizationRepository = new OrganizationRepository(
     organizationRoleRepo,
-    organizationRepo
+    organizationRepo,
   );
 
   const organizationService = new OrganizationService(organizationRepository);

@@ -1,7 +1,6 @@
-import { Document, ObjectId } from "mongodb";
 export type Roles = 'Admin' | 'Editor' | 'Approver' | 'Viewer';
 
-export interface User extends Document {
+export interface User {
   id: string;
   name : string;
   email : string;

@@ -1,54 +1,38 @@
 import { Organization } from "@/@types/organization";
-import { User } from "@/@types/user";
-import { SaveOrgDto } from "@/application/http/dto/organization-dto";
+import { SaveOrgDTO } from "@/application/http/dto/organization-dto";
 import { OrganizationRepository } from "@/infra/repositories/organization-repository";
 import { AppError } from "@/infra/utils/AppError";
+import { User } from "../entities-pg/user.entity";
 
 export class OrganizationService {
   constructor(
     private readonly organizationRepository: OrganizationRepository,
 
   ) { }
-
+  getOrganizationUsers = async (orgId: string) => {
+    return await this.organizationRepository.findOrganizationUsers(orgId);
+  }
   getUserOrganizations = async (userId: string) => {
     return await this.organizationRepository.findUserOrganizations(userId);
   }
-  save = async (payload: SaveOrgDto) => {
-    const organizationWithSameName = await this.organizationRepository.findByName(payload.name);
+  save = async (payload: SaveOrgDTO, user : User) => {
+    const organizationWithSameName = await this.organizationRepository.findByName(payload.name!);
+
+    //validates the insertion of a new organization or updating with an name that's already registered on database
     if (
-      (organizationWithSameName && !payload.orgId) ||
-      (payload.orgId && organizationWithSameName && payload.orgId != organizationWithSameName?.id)
+      (organizationWithSameName && !payload.id) ||
+      (organizationWithSameName && payload.id && payload.id != organizationWithSameName.id)
     ) {
-      throw new AppError("Organization with this name already registered", 401);
+      throw new AppError("Organization with same name already registered", 401)
     }
-    return await this.organizationRepository.create(payload);
+    const savedOrganization = await this.organizationRepository.save(payload, user);
+
+    savedOrganization.id && await this.organizationRepository.saveUsersInOrganization(savedOrganization.id, payload.users);
+
+    return savedOrganization;
   }
-
-  update = async (payload: SaveOrgDto) => {
-    if (!payload.orgId) {
-      throw new AppError("Organization id is necessary", 403)
-    }
-    const newUsersInRequest = payload.users;
-
-    const organizationInDatabase = await this.organizationRepository.findById(payload.orgId);
-    if (!organizationInDatabase) {
-      throw new AppError("Organization for update not found", 404)
-    }
-    const updatePayload = {
-      createdBy: organizationInDatabase.createdBy,
-      name: organizationInDatabase.name,
-    } as Organization;
-
-    // const newUsersListed = newUsersInRequest ? newUsersInRequest.filter((newUser) => organizationInDatabase.users.find(actual => actual.id == newUser.id)) as User[] : [];
-
-    // if (newUsersListed) {
-    //   updatePayload.users = newUsersListed;
-    // }
-    return await this.organizationRepository.update(updatePayload)
-  }
-
-  saveUsersInOrganization = async (organizationId: string, usersIds: string[]) => {
-    return await this.organizationRepository.
+  saveUsersInOrganization = async (payload: SaveOrgDTO) => {
+    return await this.organizationRepository.saveUsersInOrganization(payload.id!, payload.users)
   }
 
   delete = async (id: string) => {

@@ -52,7 +52,7 @@ app.register(fastifySwagger, {
     security: [{ bearerAuth: [] }],
     info: {
       version: "1.0.0",
-      title: "BI-api"
+      title: "Plune.app-api"
     },
   }
 });

@@ -6,9 +6,6 @@ export class Organization {
   @PrimaryGeneratedColumn({ name : 'id' })
   id: string;
 
-  @Column({ name: "createdBy", type: "text" })
-  createdBy: string;
-
   @Column({ name: "name", type: "text" })
   name: string;
 
@@ -16,7 +13,7 @@ export class Organization {
   createdAt: Date;
 
   @JoinColumn({ name: "createdBy" })
-  @OneToOne(() => User)
-  user: User;
+  @ManyToOne(() => User)
+  createdBy: User;
 
 }
