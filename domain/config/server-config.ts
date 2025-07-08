@@ -5,6 +5,7 @@ import { User } from "../entities-pg/user.entity";
 import { UserOrganizationRole } from "../entities-pg/user-organization.entity";
 import { Flow } from "../entities-pg/flow.entity";
 import { Organization } from "../entities-pg/organization.entity";
+import { Form } from "../entities-pg/form.entity";
 
 export enum EnvVariables {
   port = "PORT",
@@ -26,7 +27,7 @@ export class ServerConfig {
       type: "postgres",
       url : this.getEnv(EnvVariables.dbUrl),
       synchronize: true,
-      entities : [ User, UserOrganizationRole, Flow, Organization ]
+      entities : [ User, UserOrganizationRole, Flow, Organization, Form ]
     });
   }
 }
