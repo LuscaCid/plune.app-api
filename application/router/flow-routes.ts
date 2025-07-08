@@ -66,5 +66,5 @@ export function flowRouter(app: FastifyInstanceZod) {
       next()
     }, { prefix: "/template" });
     done();
-  }, { prefix: "/flow" })
+  }, { prefix: "/flows" })
 }
