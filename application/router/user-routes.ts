@@ -38,5 +38,5 @@ export function userRouter(app: FastifyInstanceZod) {
       }
     )
     done()
-  })
+  }, { prefix : "users"})
 }
