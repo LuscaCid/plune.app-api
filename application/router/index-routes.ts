@@ -14,7 +14,7 @@ export function Router (app : FastifyInstanceZod) {
       subInstance.register(nodesRouter);
       subInstance.register(flowRouter);
       next();
-    }, { prefix : "private"});
+    });
   
     //public routes
     instance.register(userRouter);
