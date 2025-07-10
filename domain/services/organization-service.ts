@@ -27,15 +27,15 @@ export class OrganizationService {
     }
     const savedOrganization = await this.organizationRepository.save(payload, user);
 
-    savedOrganization.id && await this.organizationRepository.saveUsersInOrganization(savedOrganization.id, payload.users);
+    savedOrganization.id && await this.organizationRepository.saveUsersInOrganization(savedOrganization.id, payload.users, user);
 
     return savedOrganization;
   }
-  saveUsersInOrganization = async (payload: SaveOrgDTO) => {
-    return await this.organizationRepository.saveUsersInOrganization(payload.id!, payload.users)
+  saveUsersInOrganization = async (payload: SaveOrgDTO, user: User) => {
+    return await this.organizationRepository.saveUsersInOrganization(payload.id!, payload.users, user)
   }
 
-  delete = async (id: string) => {
+  delete = async (id: number) => {
     return await this.organizationRepository.delete(id);
   }
 }

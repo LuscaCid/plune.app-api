@@ -1,5 +1,5 @@
 import { FastifyInstanceZod } from "@/@types/fastify-instance-zod";
-import { SaveOrgDTO, SaveUsersInOrganizationDTO } from "@/application/http/dto/organization-dto";
+import { SaveOrgDTO, SaveUsersInOrganizationDTO, UserOrgDTO } from "@/application/http/dto/organization-dto";
 import { Organization } from "@/domain/entities-pg/organization.entity";
 import { UserOrganizationRole } from "@/domain/entities-pg/user-organization.entity";
 import { User } from "@/domain/entities-pg/user.entity";
@@ -30,10 +30,10 @@ export class OrganizationRepository {
   findByName = async (name: string) => {
     return await this.organizationRepo.findOneBy({ name });
   }
-  findById = async (id: string) => {
+  findById = async (id: number) => {
     return await this.organizationRepo.findOne({ where: { id } });
   }
-  delete = async (id: string) => {
+  delete = async (id: number) => {
     return await this.organizationRepo.softDelete({ id })
   }
   save = async (org: SaveOrgDTO, user: User) => {
@@ -53,28 +53,41 @@ export class OrganizationRepository {
 
     return await this.organizationRepo.save(organization);
   }
-  saveUsersInOrganization = async (organizationId: string, users: SaveUsersInOrganizationDTO) => {
+  saveUsersInOrganization = async (organizationId: number, users: SaveUsersInOrganizationDTO, user: User) => {
     if (users) {
+      const appUserAlreadyInOrganization = await this.organizationRoleRepo.findOneBy({
+        user: { id: user.id },
+        organization: { id: organizationId }
+      });
+      if (!appUserAlreadyInOrganization) {
+        this.saveOrganizationRole({ id: user.id, role: "Admin" }, organizationId)
+      }
       for (const user of users) {
-        const userAlreadyInOrganization = await this.organizationRoleRepo.findOneBy({
+        const userInOrganization = await this.organizationRoleRepo.findOneBy({
           user: { id: user.id },
           organization: { id: organizationId }
         });
         // in case of exists, it will update role
-        if (userAlreadyInOrganization) {
-          await this.organizationRoleRepo
-            .createQueryBuilder()
-            .update()
-            .set({ ...userAlreadyInOrganization, role: user.role })
-            .execute();
+        if (userInOrganization) {
+          this.updateUserInOrganization(userInOrganization, user)
           continue;
         }
-        await this.organizationRoleRepo.save({
-          organization: { id: organizationId },
-          role: user.role,
-          user: { id: user.id }
-        });
+        this.saveOrganizationRole(user, organizationId)
       }
     }
+  }
+  saveOrganizationRole = async (user: UserOrgDTO, organizationId: number) => {
+    await this.organizationRoleRepo.save({
+      organization: { id: organizationId },
+      role: user.role,
+      user: { id: user.id }
+    });
+  }
+  updateUserInOrganization = async (userInOrganization: UserOrganizationRole, user?: UserOrgDTO) => {
+    await this.organizationRoleRepo
+      .createQueryBuilder()
+      .update()
+      .set({ ...userInOrganization, role: user ? user.role : "Admin" })
+      .execute();
   }
 }
