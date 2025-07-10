@@ -7,7 +7,7 @@ import { FlowType } from "@/application/router/flow-routes";
 @Entity("flow")
 export class Flow {
   @PrimaryGeneratedColumn({ name: 'id' })
-  id: string;
+  id: number;
 
   @Column({ name: "name", type: "text" })
   name: string;

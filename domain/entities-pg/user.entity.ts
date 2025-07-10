@@ -7,7 +7,7 @@ export type OrganizationRoleType = "Admin" | "Editor" | "Approver" | "Viewer";
 @Entity({ name: "user", synchronize: true })
 export class User {
   @PrimaryGeneratedColumn({ name: 'id' })
-  id: string;
+  id: number;
 
   @Column({ name: "name", type: "text" })
   name: string;
@@ -28,6 +28,6 @@ export class User {
   organizationRoles?: UserOrganizationRole[];
 
   // relationship for created flows by users
-  @OneToMany(() => Flow, (flow) => flow.user)
+  @OneToMany(() => Flow, (flow) => flow.createdBy)
   flows?: Flow[];
 }

@@ -4,14 +4,16 @@ import { Flow } from "./flow.entity";
 
 @Entity("organization")
 export class Organization {
-  @PrimaryGeneratedColumn({ name : 'id' })
-  id: string;
+  @PrimaryGeneratedColumn({ name: 'id' })
+  id: number;
 
   @Column({ name: "name", type: "text" })
   name: string;
 
   @CreateDateColumn()
   createdAt: Date;
+  @Column({ name: "logo", type: "text" })
+logo?: string
 
   @JoinColumn({ name: "createdBy" })
   @ManyToOne(() => User)

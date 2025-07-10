@@ -5,7 +5,7 @@ import { Organization } from "./organization.entity";
 @Entity("user_organization_roles")
 export class UserOrganizationRole {
   @PrimaryGeneratedColumn({ name : 'id' })
-  id: string;
+  id: number;
 
   @ManyToOne(() => User, user => user.organizationRoles)
   @JoinColumn({ name: "userId" })

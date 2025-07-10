@@ -5,7 +5,7 @@ import { Organization } from "./organization.entity";
 @Entity({ name: "form", synchronize: true })
 export class Form {
   @PrimaryGeneratedColumn({ name: 'id' })
-  id: string;
+  id: number;
 
   @Column({ name: "name", type: "text" })
   name: string;
