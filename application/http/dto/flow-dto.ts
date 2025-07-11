@@ -71,7 +71,7 @@ export class FlowDTO {
   static getFlowDTO = z.object({
     page: z.string().min(1),
     pageSize : z.string().optional(),
-    isPublished: z.boolean().optional(),
+    isPublished: z.preprocess((val) => Boolean(val), z.boolean().optional()),
     orgId: z.string().min(1)
   })
 
