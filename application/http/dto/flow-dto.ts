@@ -58,8 +58,8 @@ export class FlowDTO {
   });
 
   static saveFlowDTO = z.object({
-    id: z.string().min(1).optional(),
-    organizationId: z.string().min(1),
+    id: z.number().min(1).optional(),
+    organizationId: z.number().min(1),
     name: z.string().min(2).optional(),
     description: z.string().min(2).optional(),
     currentStage: z.string().default("start"),

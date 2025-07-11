@@ -1,6 +1,5 @@
 import { FastifyInstanceZod } from "@/@types/fastify-instance-zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
 import { FlowDTO } from "../http/dto/flow-dto";
 
 export type FlowType = "template" | "instance";
@@ -21,8 +20,8 @@ export function flowRouter(app: FastifyInstanceZod) {
             }
           },
           async (req, reply) => {
-            const data = await router.flowService.getOrganizationFlows(req.query, type);
-            return reply.status(200).send({ data, statusCode: 200 })
+            const response = await router.flowService.getOrganizationFlows(req.query, type);
+            return reply.status(200).send({ data: response.data, count : response.count, statusCode: 200 })
           }
         );
       router.withTypeProvider<ZodTypeProvider>()

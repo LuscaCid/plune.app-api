@@ -1,6 +1,4 @@
 import { AppError } from "@/infra/utils/AppError";
-import { Flow } from "../entities-pg/flow.entity";
-import { IFlowRepository } from "../interfaces/FlowRepository";
 import { FlowRepository } from "@/infra/repositories/flow-repository";
 import { FlowType } from "@/application/router/flow-routes";
 import { User } from "../entities-pg/user.entity";
@@ -27,7 +25,7 @@ export class FlowService {
     return await this.flowRepository.save(flow, user);
   }
 
-  delete = async (flowId: string) => {
+  delete = async (flowId: number) => {
     return await this.flowRepository.delete(flowId);
   }
 }

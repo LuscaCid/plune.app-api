@@ -30,7 +30,7 @@ export class FlowRepository {
 
     return await this.flowRepo.save(newFlow)
   }
-  delete = async (flowId: string) => {
+  delete = async (flowId: number) => {
     await this.flowRepo.softDelete({ id: flowId });
   }
   getOrganizationFlows = async (payload: GetFlowDTO, type: FlowType) => {
@@ -45,11 +45,14 @@ export class FlowRepository {
     if (payload.isPublished != undefined) {
       query.andWhere("flow.isPublished = :isPublished", { isPublished: payload.isPublished })
     }
-    return await query
+    const data = await query
       .take(size)
       .skip(skip)
       .orderBy({ "flow.createdAt": "DESC", "flow.name": "DESC" })
-      .getMany()
+      .getMany();
+
+    const count = await query.getCount();
+    return { data, count }
   }
 
 
