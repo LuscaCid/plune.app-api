@@ -12,8 +12,8 @@ export class Organization {
 
   @CreateDateColumn()
   createdAt: Date;
-  @Column({ name: "logo", type: "text" })
-logo?: string
+  @Column({ name: "logo", type: "text", nullable: true })
+  logo?: string
 
   @JoinColumn({ name: "createdBy" })
   @ManyToOne(() => User)
