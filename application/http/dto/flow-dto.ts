@@ -64,8 +64,8 @@ export class FlowDTO {
     description: z.string().min(2).optional(),
     currentStage: z.string().default("start"),
     type: FlowDTO.type,
-    nodes: z.array(FlowDTO.flowNode),
-    edges: z.array(FlowDTO.flowEdge),
+    nodes: z.array(FlowDTO.flowNode).optional(),
+    edges: z.array(FlowDTO.flowEdge).optional(),
   });
 
   static getFlowDTO = z.object({

@@ -29,10 +29,10 @@ export class Flow {
   })
   type: "template" | "instance";
 
-  @Column({ name: "nodes", type: "jsonb" })
+  @Column({ name: "nodes", type: "jsonb", nullable : true })
   nodes: FlowNode[];
 
-  @Column({ name: "edges", type: "jsonb" })
+  @Column({ name: "edges", type: "jsonb", nullable : true })
   edges: FlowEdge[];
 
   @CreateDateColumn()
