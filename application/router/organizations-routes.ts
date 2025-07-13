@@ -91,16 +91,16 @@ export function organizationRouter(app: FastifyInstanceZod) {
       )
     instance.withTypeProvider<ZodTypeProvider>()
       .delete(
-        "/",
+        "/:id",
         {
           schema: {
-            querystring: z.object({
-              orgId: z.number().transform(val => Number(val))
+            params: z.object({
+              id: z.preprocess((val) => Number(val), z.number().min(1)),
             })
           }
         },
         async (req, reply) => {
-          const response = await instance.organizationService.delete(req.query.orgId);
+          const response = await instance.organizationService.delete(req.params.id);
           return reply.status(200).send({ message: "organization deleted with success", data: response, statusCode: 200 })
         }
       );
