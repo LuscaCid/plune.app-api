@@ -37,6 +37,7 @@
     "node-fetch": "^3.3.2",
     "papaparse": "^5.5.3",
     "pg": "^8.16.2",
+    "react-loading-skeleton": "^3.5.0",
     "reactflow": "^11.11.4",
     "reflect-metadata": "^0.2.2",
     "tsx": "^4.19.4",
