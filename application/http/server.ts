@@ -25,7 +25,7 @@ app.register(rateLimit, {
   max: 50,
   timeWindow: "4000"
 });
-app.register(fastifyCors, { origin: "*" });
+app.register(fastifyCors, { origin: "*", methods: ["GET", "DELETE", "POST", "PUT", "PATCH", "HEADER"] });
 
 app.register(connectionPlugin);
 app.register(userPlugin);

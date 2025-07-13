@@ -11,17 +11,18 @@ export class FlowRepository {
   constructor(
     private readonly flowRepo: Repository<Flow>,
   ) { }
-  getFlowByNameAndOrganization = async (name : string, orgId: number) => {
-    return await this.flowRepo.findOneBy({ name, organization : { id : orgId }})
+  getFlowByNameAndOrganization = async (name: string, orgId: number) => {
+    return await this.flowRepo.findOneBy({ name, organization: { id: orgId } })
   }
   save = async (flow: SaveFlowDTO, user: User) => {
+    console.log(flow.isPublished)
     if (flow.id) {
       const savingFlow = await this.flowRepo.findOneBy({ id: flow.id });
       if (!savingFlow) {
         throw new AppError('flow not found', 404)
       }
       Object.assign(savingFlow, flow);
-
+      savingFlow.isPublished = flow.isPublished ?? false;
       return await this.flowRepo.save(savingFlow);
     }
     const newFlow = new Flow();
@@ -29,6 +30,7 @@ export class FlowRepository {
     Object.assign(newFlow, flow);
     newFlow.organization = { id: flow.organizationId } as Organization;
     newFlow.createdBy = { id: user.id } as User;
+    newFlow.isPublished = flow.isPublished ?? false;
 
     return await this.flowRepo.save(newFlow)
   }
@@ -44,9 +46,9 @@ export class FlowRepository {
       .where("organization.id = :id", { id: payload.orgId })
       .andWhere("flow.type = :type", { type });
 
-    if (payload.isPublished != undefined) {
-      query.andWhere("flow.isPublished = :isPublished", { isPublished: payload.isPublished })
-    }
+    // if (payload.isPublished != undefined) {
+    //   query.andWhere("flow.isPublished = :isPublished", { isPublished: payload.isPublished })
+    // }
     const data = await query
       .take(size)
       .skip(skip)

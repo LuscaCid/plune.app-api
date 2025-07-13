@@ -62,6 +62,7 @@ export class FlowDTO {
     organizationId: z.number().min(1),
     name: z.string().min(2),
     description: z.string().min(2).optional(),
+    isPublished: z.boolean().optional(),
     currentStage: z.string().default("start"),
     type: FlowDTO.type,
     nodes: z.array(FlowDTO.flowNode).optional(),
