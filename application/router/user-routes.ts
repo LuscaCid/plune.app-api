@@ -7,13 +7,13 @@ import { authGuard } from "../http/middleware/auth-guard";
 
 export function userRouter(app: FastifyInstanceZod) {
   const userTags = ["Users"]
-  app.register((instance, opts, done) => {
+  app.register((instance, _, done) => {
     instance.withTypeProvider<ZodTypeProvider>()
       .get(
         "/",
         {
-          preHandler: (req, reply, done) => authGuard(req,reply, done),
-          schema: { 
+          preHandler: (req, reply, done) => authGuard(req, reply, done),
+          schema: {
             querystring: z.object({ email: z.string() }),
             tags: userTags
           }
@@ -54,6 +54,14 @@ export function userRouter(app: FastifyInstanceZod) {
         })
       }
     )
+    instance.withTypeProvider<ZodTypeProvider>()
+      .get(
+        'notifications',
+        { schema: { tags: userTags } },
+        async (req, reply) => {
+          
+        }
+      )
     done()
   }, { prefix: "users" })
 }

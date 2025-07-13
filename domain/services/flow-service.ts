@@ -8,6 +8,11 @@ export class FlowService {
   constructor(
     private readonly flowRepository: FlowRepository
   ) { }
+
+  restore = async (id: number) => {
+    return await this.flowRepository.restore(id);
+  }
+
   updateNodePosition = async () => {
 
   }

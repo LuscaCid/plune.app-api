@@ -11,6 +11,11 @@ export class FlowRepository {
   constructor(
     private readonly flowRepo: Repository<Flow>,
   ) { }
+
+  restore = async (id: number) => {
+    return await this.flowRepo.restore(id);
+  }
+
   getFlowByNameAndOrganization = async (name: string, orgId: number) => {
     return await this.flowRepo.findOneBy({ name, organization: { id: orgId } })
   }
