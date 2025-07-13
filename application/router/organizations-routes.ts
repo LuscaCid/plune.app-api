@@ -104,6 +104,22 @@ export function organizationRouter(app: FastifyInstanceZod) {
           return reply.status(200).send({ message: "organization deleted with success", data: response, statusCode: 200 })
         }
       );
+    instance.withTypeProvider<ZodTypeProvider>()
+      .put(
+        "/restore/:id",
+        {
+          schema: {
+            params: z.object({
+              id : z.preprocess(val => Number(val), z.number().min(1))
+            }) 
+          }
+        },
+        async (req, reply) => {
+          const restored = await instance.organizationService.restore(req.params.id);
+          return reply.status(200).send({data: restored, statusCode : 200, message: "Organization restored"})
+        }
+      )
+
     done();
   }, { prefix: "/organizations" });
 }

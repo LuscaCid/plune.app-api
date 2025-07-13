@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Flow } from "./flow.entity";
 
@@ -20,5 +20,8 @@ export class Organization {
   createdBy: User;
 
   @OneToMany(() => Flow, (flow) => flow.organization)
-  flows: Flow[]
+  flows: Flow[];
+  
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

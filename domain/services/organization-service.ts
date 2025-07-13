@@ -38,4 +38,8 @@ export class OrganizationService {
   delete = async (id: number) => {
     return await this.organizationRepository.delete(id);
   }
+
+  restore = async (id: number) => {
+    return await this.organizationRepository.restore(id);
+  }
 }

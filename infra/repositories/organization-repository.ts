@@ -10,7 +10,10 @@ export class OrganizationRepository {
     private readonly organizationRoleRepo: Repository<UserOrganizationRole>,
     private readonly organizationRepo: Repository<Organization>,
   ) { }
-
+  
+  restore = async (id: number) => {
+    return await this.organizationRepo.restore(id);
+  }
   findUserOrganizations = async (userId: number) => {
     return await this.organizationRoleRepo
       .createQueryBuilder("orp")
