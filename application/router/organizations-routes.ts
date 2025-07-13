@@ -94,6 +94,7 @@ export function organizationRouter(app: FastifyInstanceZod) {
         "/:id",
         {
           schema: {
+            tags: orgTags,
             params: z.object({
               id: z.preprocess((val) => Number(val), z.number().min(1)),
             })
@@ -109,6 +110,7 @@ export function organizationRouter(app: FastifyInstanceZod) {
         "/restore/:id",
         {
           schema: {
+            tags: orgTags,
             params: z.object({
               id : z.preprocess(val => Number(val), z.number().min(1))
             }) 
