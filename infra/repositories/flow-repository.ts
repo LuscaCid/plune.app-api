@@ -11,7 +11,9 @@ export class FlowRepository {
   constructor(
     private readonly flowRepo: Repository<Flow>,
   ) { }
-
+  getFlowByNameAndOrganization = async (name : string, orgId: number) => {
+    return await this.flowRepo.findOneBy({ name, organization : { id : orgId }})
+  }
   save = async (flow: SaveFlowDTO, user: User) => {
     if (flow.id) {
       const savingFlow = await this.flowRepo.findOneBy({ id: flow.id });

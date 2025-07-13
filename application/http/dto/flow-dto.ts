@@ -2,7 +2,7 @@ import { Flow } from "@/domain/entities-pg/flow.entity";
 import z from "zod";
 
 export class FlowDTO {
-  static type = z.string(z.enum(["template", "instance"])).default("template");
+  static type = z.enum(["template", "instance"]).default("template");
 
   static formField = z.object({
     name: z.string().min(1).optional(),
@@ -60,7 +60,7 @@ export class FlowDTO {
   static saveFlowDTO = z.object({
     id: z.number().min(1).optional(),
     organizationId: z.number().min(1),
-    name: z.string().min(2).optional(),
+    name: z.string().min(2),
     description: z.string().min(2).optional(),
     currentStage: z.string().default("start"),
     type: FlowDTO.type,

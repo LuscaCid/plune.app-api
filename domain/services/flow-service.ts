@@ -12,6 +12,9 @@ export class FlowService {
 
   }
 
+  ensureFlowIsUnique = async (name : string, orgId: number) => {
+    return await this.flowRepository.getFlowByNameAndOrganization(name, orgId);
+  }
   update = async (flow: SaveFlowDTO, user: User) => {
     if (!flow.id) throw new AppError("The id is necessary for update a flow")
     return await this.flowRepository.save(flow, user);
@@ -22,6 +25,12 @@ export class FlowService {
   }
 
   save = async (flow: SaveFlowDTO, user: User) => {
+    if (flow.id && flow.type == "template") {
+      const flowExists = await this.ensureFlowIsUnique(flow.name, flow.organizationId);
+      if (flowExists) {
+        throw new AppError("Flow template with same name already registered");
+      }
+    }
     return await this.flowRepository.save(flow, user);
   }
 
