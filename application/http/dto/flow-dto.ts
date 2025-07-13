@@ -10,12 +10,12 @@ export class FlowDTO {
     type: z.enum(['text', 'email', 'number', 'select', 'checkbox', 'radio', 'date']).default("text"),
     required: z.boolean().default(false),
     value: z.string(),
-    options: z.array(z.string()), //em caso de select // checkbox
+    options: z.array(z.string()).optional(), //em caso de select // checkbox
     order: z.number(),
   })
 
   static form = z.object({
-    id: z.string().min(1).optional(),
+    id: z.number().min(1).optional(),
     name: z.string().min(1),
     organizationId: z.number().min(1),
     fields: z.array(FlowDTO.formField)
@@ -78,6 +78,10 @@ export class FlowDTO {
 
 }
 
+//form
+export type SaveFormDTO = z.infer<typeof FlowDTO.form>;
+
+//flows
 export type SaveFlowDTO = z.infer<typeof FlowDTO.saveFlowDTO>;
 export type FlowTypeDTO = z.infer<typeof FlowDTO.type>;
 export type GetFlowDTO = z.infer<typeof FlowDTO.getFlowDTO>;
