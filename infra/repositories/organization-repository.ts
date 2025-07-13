@@ -11,7 +11,7 @@ export class OrganizationRepository {
     private readonly organizationRepo: Repository<Organization>,
   ) { }
 
-  findUserOrganizations = async (userId: string) => {
+  findUserOrganizations = async (userId: number) => {
     return await this.organizationRoleRepo
       .createQueryBuilder("orp")
       .innerJoinAndSelect("orp.organization", "organization")
@@ -19,7 +19,7 @@ export class OrganizationRepository {
       .where("user.id = :id", { id: userId })
       .getMany();
   }
-  findOrganizationUsers = async (orgId: string) => {
+  findOrganizationUsers = async (orgId: number) => {
     return await this.organizationRoleRepo.createQueryBuilder("orp")
       .innerJoin("orp.organization", "organization")
       .innerJoin("orp.user", "user")

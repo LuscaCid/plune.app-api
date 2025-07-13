@@ -13,9 +13,9 @@ export function organizationRouter(app: FastifyInstanceZod) {
       "/organization-users",
       {
         schema: {
-          querystring: z.object({ orgId: z.string().min(1) }),
+          querystring: z.object({ orgId: z.number().min(1).transform(val => Number(val)) }),
           tags: orgTags,
-          summary :"Returns all users from a organization"
+          summary: "Returns all users from a organization"
         }
       },
       async (req, reply) => {
@@ -85,10 +85,25 @@ export function organizationRouter(app: FastifyInstanceZod) {
           }
         },
         async (req, reply) => {
-          const data = await instance.organizationService.saveUsersInOrganization(req.body);
+          const data = await instance.organizationService.saveUsersInOrganization(req.body, req.tokenPayload!.user!);
           return reply.status(200).send({ data, message: "Users updated.", statusCode: 200 })
         }
       )
+    instance.withTypeProvider<ZodTypeProvider>()
+      .delete(
+        "/",
+        {
+          schema: {
+            querystring: z.object({
+              orgId: z.number().transform(val => Number(val))
+            })
+          }
+        },
+        async (req, reply) => {
+          const response = await instance.organizationService.delete(req.query.orgId);
+          return reply.status(200).send({ message: "organization deleted with success", data: response, statusCode: 200 })
+        }
+      );
     done();
   }, { prefix: "/organizations" });
 }

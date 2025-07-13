@@ -9,10 +9,10 @@ export class OrganizationService {
     private readonly organizationRepository: OrganizationRepository,
 
   ) { }
-  getOrganizationUsers = async (orgId: string) => {
+  getOrganizationUsers = async (orgId: number) => {
     return await this.organizationRepository.findOrganizationUsers(orgId);
   }
-  getUserOrganizations = async (userId: string) => {
+  getUserOrganizations = async (userId: number) => {
     return await this.organizationRepository.findUserOrganizations(userId);
   }
   save = async (payload: SaveOrgDTO, user : User) => {
