@@ -1,5 +1,5 @@
 import { FlowEdge, FlowNode } from "@/@types/Flow";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Organization } from "./organization.entity";
 import { FlowType } from "@/application/router/flow-routes";
@@ -40,6 +40,9 @@ export class Flow {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.flows)
   @JoinColumn({ name: "createdBy" })
