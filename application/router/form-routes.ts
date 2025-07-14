@@ -8,7 +8,7 @@ export function formRouter(app: FastifyInstanceZod) {
   app.register((instance, _, done) => {
     instance.withTypeProvider<ZodTypeProvider>()
       .get(
-        "/organization-forms/:id",
+        "/:id",
         {
           schema: {
             tags: formTags,
@@ -22,7 +22,7 @@ export function formRouter(app: FastifyInstanceZod) {
       );
     instance.withTypeProvider<ZodTypeProvider>()
       .post(
-        "/create-form-organiztaion",
+        "/",
         {
           schema: {
             tags: formTags,
@@ -36,7 +36,7 @@ export function formRouter(app: FastifyInstanceZod) {
       )
     instance.withTypeProvider<ZodTypeProvider>()
       .put(
-        "/update-form-organiztaion",
+        "/",
         {
           schema: {
             tags: formTags,
