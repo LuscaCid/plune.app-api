@@ -5,6 +5,7 @@ import { UserService } from "@/domain/services/user-service";
 import { OrganizationService } from "@/domain/services/organization-service";
 import { FlowService } from "@/domain/services/flow-service";
 import { DataSource } from "typeorm";
+import { FormService } from "@/domain/services/form-service";
 
 export interface FastifyInstanceZod extends FastifyInstance<
   RawServerDefault,
@@ -18,10 +19,12 @@ declare module 'fastify' {
     tokenPayload?: AppTokenPayload
   }
   interface FastifyInstance {
-    userService : UserService;
-    organizationService : OrganizationService;
+    userService: UserService;
+    organizationService: OrganizationService;
+    formService: FormService;
     // different DI by flow
-    flowService : FlowService;
-    dataSource : DataSource;
+    flowService: FlowService;
+    dataSource: DataSource;
+
   }
 }

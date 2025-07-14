@@ -13,6 +13,7 @@ import { Router } from "../router/index-routes";
 import { organizationPlugin } from "./plugin/organization-plugin";
 import { flowPlugin } from "./plugin/flow-plugin";
 import { connectionPlugin } from "./plugin/connection-plugin";
+import { formPlugin } from "./plugin/form-plugin";
 
 const port = process.env["PORT"] || 3000;
 
@@ -24,12 +25,13 @@ app.register(rateLimit, {
   max: 50,
   timeWindow: "4000"
 });
-app.register(fastifyCors, { origin: "*" });
+app.register(fastifyCors, { origin: "*", methods: ["GET", "DELETE", "POST", "PUT", "PATCH", "HEADER"] });
 
 app.register(connectionPlugin);
 app.register(userPlugin);
 app.register(organizationPlugin);
 app.register(flowPlugin);
+app.register(formPlugin);
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);

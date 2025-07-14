@@ -4,8 +4,8 @@ import { Organization } from "./organization.entity";
 //many to many table thats define relation with column to set user role inside organization
 @Entity("user_organization_roles")
 export class UserOrganizationRole {
-  @PrimaryGeneratedColumn({ name : 'id' })
-  id: string;
+  @PrimaryGeneratedColumn({ name: 'id' })
+  id: number;
 
   @ManyToOne(() => User, user => user.organizationRoles)
   @JoinColumn({ name: "userId" })
@@ -20,4 +20,7 @@ export class UserOrganizationRole {
     enum: ["Admin", "Editor", "Approver", "Viewer"]
   })
   role: OrganizationRoleType;
+
+  @Column({ name: "accepted", type: "boolean", default: false })
+  accepted: boolean;
 }

@@ -13,9 +13,9 @@ export function organizationRouter(app: FastifyInstanceZod) {
       "/organization-users",
       {
         schema: {
-          querystring: z.object({ orgId: z.string().min(1) }),
+          querystring: z.object({ orgId: z.number().min(1).transform(val => Number(val)) }),
           tags: orgTags,
-          summary :"Returns all users from a organization"
+          summary: "Returns all users from a organization"
         }
       },
       async (req, reply) => {
@@ -85,10 +85,43 @@ export function organizationRouter(app: FastifyInstanceZod) {
           }
         },
         async (req, reply) => {
-          const data = await instance.organizationService.saveUsersInOrganization(req.body);
+          const data = await instance.organizationService.saveUsersInOrganization(req.body, req.tokenPayload!.user!);
           return reply.status(200).send({ data, message: "Users updated.", statusCode: 200 })
         }
       )
+    instance.withTypeProvider<ZodTypeProvider>()
+      .delete(
+        "/:id",
+        {
+          schema: {
+            tags: orgTags,
+            params: z.object({
+              id: z.preprocess((val) => Number(val), z.number().min(1)),
+            })
+          }
+        },
+        async (req, reply) => {
+          const response = await instance.organizationService.delete(req.params.id);
+          return reply.status(200).send({ message: "organization deleted with success", data: response, statusCode: 200 })
+        }
+      );
+    instance.withTypeProvider<ZodTypeProvider>()
+      .put(
+        "/restore/:id",
+        {
+          schema: {
+            tags: orgTags,
+            params: z.object({
+              id : z.preprocess(val => Number(val), z.number().min(1))
+            }) 
+          }
+        },
+        async (req, reply) => {
+          const restored = await instance.organizationService.restore(req.params.id);
+          return reply.status(200).send({data: restored, statusCode : 200, message: "Organization restored"})
+        }
+      )
+
     done();
   }, { prefix: "/organizations" });
 }

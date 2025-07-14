@@ -2,7 +2,7 @@ import { Flow } from "@/domain/entities-pg/flow.entity";
 import z from "zod";
 
 export class FlowDTO {
-  static type = z.string(z.enum(["template", "instance"])).default("template");
+  static type = z.enum(["template", "instance"]).default("template");
 
   static formField = z.object({
     name: z.string().min(1).optional(),
@@ -10,12 +10,12 @@ export class FlowDTO {
     type: z.enum(['text', 'email', 'number', 'select', 'checkbox', 'radio', 'date']).default("text"),
     required: z.boolean().default(false),
     value: z.string(),
-    options: z.array(z.string()), //em caso de select // checkbox
+    options: z.array(z.string()).optional(), //em caso de select // checkbox
     order: z.number(),
   })
 
   static form = z.object({
-    id: z.string().min(1).optional(),
+    id: z.number().min(1).optional(),
     name: z.string().min(1),
     organizationId: z.number().min(1),
     fields: z.array(FlowDTO.formField)
@@ -58,25 +58,30 @@ export class FlowDTO {
   });
 
   static saveFlowDTO = z.object({
-    id: z.string().min(1).optional(),
-    organizationId: z.string().min(1),
-    name: z.string().min(2).optional(),
+    id: z.number().min(1).optional(),
+    organizationId: z.number().min(1),
+    name: z.string().min(2),
     description: z.string().min(2).optional(),
+    isPublished: z.boolean().optional(),
     currentStage: z.string().default("start"),
     type: FlowDTO.type,
-    nodes: z.array(FlowDTO.flowNode),
-    edges: z.array(FlowDTO.flowEdge),
+    nodes: z.array(FlowDTO.flowNode).optional(),
+    edges: z.array(FlowDTO.flowEdge).optional(),
   });
 
   static getFlowDTO = z.object({
     page: z.string().min(1),
     pageSize : z.string().optional(),
-    isPublished: z.boolean().optional(),
+    isPublished: z.preprocess((val) => Boolean(val), z.boolean().optional()),
     orgId: z.string().min(1)
   })
 
 }
 
+//form
+export type SaveFormDTO = z.infer<typeof FlowDTO.form>;
+
+//flows
 export type SaveFlowDTO = z.infer<typeof FlowDTO.saveFlowDTO>;
 export type FlowTypeDTO = z.infer<typeof FlowDTO.type>;
 export type GetFlowDTO = z.infer<typeof FlowDTO.getFlowDTO>;

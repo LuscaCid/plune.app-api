@@ -1,5 +1,5 @@
 import { FlowEdge, FlowNode } from "@/@types/Flow";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Organization } from "./organization.entity";
 import { FlowType } from "@/application/router/flow-routes";
@@ -7,7 +7,7 @@ import { FlowType } from "@/application/router/flow-routes";
 @Entity("flow")
 export class Flow {
   @PrimaryGeneratedColumn({ name: 'id' })
-  id: string;
+  id: number;
 
   @Column({ name: "name", type: "text" })
   name: string;
@@ -29,10 +29,10 @@ export class Flow {
   })
   type: "template" | "instance";
 
-  @Column({ name: "nodes", type: "jsonb" })
+  @Column({ name: "nodes", type: "jsonb", nullable : true })
   nodes: FlowNode[];
 
-  @Column({ name: "edges", type: "jsonb" })
+  @Column({ name: "edges", type: "jsonb", nullable : true })
   edges: FlowEdge[];
 
   @CreateDateColumn()
@@ -40,6 +40,9 @@ export class Flow {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.flows)
   @JoinColumn({ name: "createdBy" })

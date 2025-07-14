@@ -1,7 +1,7 @@
 import { FastifyInstanceZod } from "@/@types/fastify-instance-zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
 import { FlowDTO } from "../http/dto/flow-dto";
+import { z } from "zod";
 
 export type FlowType = "template" | "instance";
 
@@ -21,8 +21,8 @@ export function flowRouter(app: FastifyInstanceZod) {
             }
           },
           async (req, reply) => {
-            const data = await router.flowService.getOrganizationFlows(req.query, type);
-            return reply.status(200).send({ data, statusCode: 200 })
+            const response = await router.flowService.getOrganizationFlows(req.query, type);
+            return reply.status(200).send({ data: response.data, count: response.count, statusCode: 200 })
           }
         );
       router.withTypeProvider<ZodTypeProvider>()
@@ -55,6 +55,34 @@ export function flowRouter(app: FastifyInstanceZod) {
             return reply.status(200).send({ data: flowUpdated, statusCode: 200, message: "Flow updated with success" });
           }
         )
+      router.withTypeProvider<ZodTypeProvider>()
+        .delete(
+          "/:id",
+          {
+            schema: {
+              tags: flowTags,
+              params: z.object({ id: z.preprocess((val) => Number(val), z.number().min(1)) })
+            }
+          },
+          async (req, reply) => {
+            const deleted = await router.flowService.delete(req.params.id);
+            return reply.status(200).send({ data: deleted, message: `Flow ${type} deleted with success`, statusCode: 200 })
+          }
+        )
+      router.withTypeProvider<ZodTypeProvider>()
+        .put(
+          "/restore",
+          {
+            schema: {
+              tags: flowTags,
+              params: z.object({ id: z.preprocess((val) => Number(val), z.number().min(1)) })
+            }
+          },
+          async (req, reply) => {
+            const restored = await router.flowService.restore(req.params.id);
+            return reply.status(200).send({ data : restored, statusCode :200, message: `Flow ${type} restored`})
+          }
+        )
     }
     instance.register((router, _, next) => {
       setupFlowRoutes(router, "instance");
@@ -66,5 +94,5 @@ export function flowRouter(app: FastifyInstanceZod) {
       next()
     }, { prefix: "/template" });
     done();
-  }, { prefix: "/flow" })
+  }, { prefix: "/flows" })
 }

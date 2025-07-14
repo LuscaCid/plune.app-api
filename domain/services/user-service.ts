@@ -42,7 +42,9 @@ export class UserService {
 
     return await this.userRepository.create(newUser);
   }
-
+  getManyByEmail = async (email: string) => {
+    return await this.userRepository.findManyByEmail(email);
+  }
   update = () => {
 
   }
