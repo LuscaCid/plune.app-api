@@ -1,4 +1,4 @@
-import { FormField } from "@/@types/Form";
+import { FormSections } from "@/@types/Form";
 import { SaveFormDTO } from "@/application/http/dto/flow-dto";
 import { Form } from "@/domain/entities-pg/form.entity";
 import { Organization } from "@/domain/entities-pg/organization.entity";
@@ -17,7 +17,7 @@ export class FormRepository {
       if (!existingForm) {
         throw new AppError("Form for update not found", 404);
       }
-      existingForm.formFields = form.fields ? form.fields as FormField[] : existingForm.formFields;
+      existingForm.sections = form.sections ? form.sections as FormSections[] : existingForm.sections;
       existingForm.name = form.name;
 
       return await this.formRepo.save(existingForm);
@@ -26,7 +26,7 @@ export class FormRepository {
 
     Object.assign(newForm, form);
     newForm.organization = { id: form.organizationId } as Organization;
-    newForm.formFields = form.fields as FormField[];
+    newForm.sections = form.sections as FormSections[];
     newForm.createdBy = { id: user.id } as User;
     return await this.formRepo.save(newForm)
   }
