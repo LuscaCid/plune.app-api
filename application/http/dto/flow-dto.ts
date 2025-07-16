@@ -16,12 +16,18 @@ export class FlowDTO {
     order: z.number(),
     values: z.object({}).optional()
   })
+  static sections = z.object({
+    layout: z.enum(["cols-1", "cols-2", "cols-3", "cols-4"]),
+    fields: z.array(FlowDTO.formField),
+    id: z.string().min(1),
+    order: z.number().min(1).optional()
+  })
 
   static form = z.object({
     id: z.number().min(1).optional(),
     name: z.string().min(1),
     organizationId: z.number().min(1),
-    fields: z.array(FlowDTO.formField)
+    sections: z.array(FlowDTO.sections)
   })
   static conditionalRule = z.object({
     fieldName: z.string(),
@@ -74,7 +80,7 @@ export class FlowDTO {
 
   static getFlowDTO = z.object({
     page: z.string().min(1),
-    pageSize : z.string().optional(),
+    pageSize: z.string().optional(),
     isPublished: z.preprocess((val) => Boolean(val), z.boolean().optional()),
     orgId: z.string().min(1)
   })

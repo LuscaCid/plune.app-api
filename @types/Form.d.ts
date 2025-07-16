@@ -1,4 +1,4 @@
-export type FormFieldType = 'text' | 'email' | 'number' | 'select' | 'checkbox' | 'radio' | 'date'
+export type FormFieldType = 'text' | 'email' | 'number' | 'select' | 'checkbox' | 'radio' | 'date' | "password"
 
 export interface FormField {
   id: string;
@@ -21,5 +21,15 @@ export interface Form {
   createdBy: string
   createdAt: string
   updatedAt: string
-  fields: FormField[]
+  deletedAt: Date;
+  sections: FormSections[]
 }
+
+export type SectionLayout = "cols-1" | "cols-2" | "cols-3" | "cols-4";
+export interface FormSections {
+  layout: SectionLayout;
+  fields: FormField[];
+  id: string;
+  order?: number;
+
+} 

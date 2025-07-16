@@ -1,4 +1,4 @@
-import { FormField } from "@/@types/Form";
+import { FormField, FormSections } from "@/@types/Form";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Organization } from "./organization.entity";
 import { User } from "./user.entity";
@@ -11,8 +11,8 @@ export class Form {
   @Column({ name: "name", type: "text" })
   name: string;
 
-  @Column({ name: "formFields", type: "jsonb", nullable: true, default: [] })
-  formFields: FormField[];
+  @Column({ name: "sections", type: "jsonb", nullable: true, default: [] })
+  sections: FormSections[];
 
   @CreateDateColumn({ name: "createdAt" })
   createdAt: Date
