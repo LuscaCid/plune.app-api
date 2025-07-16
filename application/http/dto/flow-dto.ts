@@ -7,11 +7,14 @@ export class FlowDTO {
   static formField = z.object({
     name: z.string().min(1).optional(),
     label: z.string().min(1).optional(),
+    placeholder: z.string().min(1).optional(),
+    description: z.string().min(1).optional(),
     type: z.enum(['text', 'email', 'number', 'select', 'checkbox', 'radio', 'date']).default("text"),
     required: z.boolean().default(false),
     value: z.string(),
     options: z.array(z.string()).optional(), //em caso de select // checkbox
     order: z.number(),
+    values: z.object({}).optional()
   })
 
   static form = z.object({
