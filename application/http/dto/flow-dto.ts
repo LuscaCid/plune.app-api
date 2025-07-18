@@ -5,22 +5,23 @@ export class FlowDTO {
   static type = z.enum(["template", "instance"]).default("template");
 
   static formField = z.object({
+    id: z.string().min(1).optional(),
     name: z.string().min(1).optional(),
     label: z.string().min(1).optional(),
     placeholder: z.string().min(1).optional(),
     description: z.string().min(1).optional(),
     type: z.enum(['text', 'email', 'number', 'select', 'checkbox', 'radio', 'date']).default("text"),
     required: z.boolean().default(false),
-    value: z.string(),
+    value: z.string().optional(),
     options: z.array(z.string()).optional(), //em caso de select // checkbox
-    order: z.number(),
+    order: z.number().optional(),
     values: z.object({}).optional()
   })
   static sections = z.object({
     layout: z.enum(["cols-1", "cols-2", "cols-3", "cols-4"]),
     fields: z.array(FlowDTO.formField),
     id: z.string().min(1),
-    order: z.number().min(1).optional()
+    order: z.number().optional()
   })
 
   static form = z.object({
